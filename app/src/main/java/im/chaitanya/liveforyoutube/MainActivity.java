@@ -155,14 +155,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     Toast.makeText(context, "Room already exists. Joining", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    List<User> users = new ArrayList<User>();
-                    users.add(new User(firebaseAuth.getCurrentUser().getEmail(), firebaseAuth.getCurrentUser().getDisplayName().split(" ")[0]));
-                    Group group = new Group(roomID, null, users, null);
+                    String email = firebaseAuth.getCurrentUser().getEmail();
+                    String fname = firebaseAuth.getCurrentUser().getDisplayName().split(" ")[0];
+                    final User user = new User(email, fname);
+                    Group group = new Group(roomID, null, null, null);
                     databaseReference.child(roomID).setValue(group, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            Toast.makeText(context, "Room created", Toast.LENGTH_SHORT).show();
+                            databaseReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).setValue(user);
                             Intent playlistIntent = new Intent(context, PlaylistActivity.class);
+                            Toast.makeText(context, "Room created", Toast.LENGTH_SHORT).show();
                             playlistIntent.putExtra(roomIDExtra, roomID);
                             startActivity(playlistIntent);
                         }
