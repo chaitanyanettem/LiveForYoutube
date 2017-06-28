@@ -40,6 +40,7 @@ dependencies {
 
     //Once
     compile 'com.jonathanfinerty.once:once:1.2.2'
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
 
