@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private static final int RC_SIGN_IN = 9001;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
+    public final static String roomIDExtra = "roomID";
 
     @BindView(R.id.room_id) EditText roomIDEditText;
     @BindView(R.id.user_firstname) TextView userName;
@@ -147,26 +147,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void createOrJoinRoom(final String roomID) {
         final Context context = this;
-        DatabaseReference roomReference = databaseReference.child("groups").child(roomID);
+        DatabaseReference roomReference = databaseReference.child(roomID);
         roomReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(roomID)) {
-                    Toast.makeText(context, "room already exists. Join", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.exists()) {
+                    Toast.makeText(context, "Room already exists. Joining", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     List<User> users = new ArrayList<User>();
                     users.add(new User(firebaseAuth.getCurrentUser().getEmail(), firebaseAuth.getCurrentUser().getDisplayName().split(" ")[0]));
                     Group group = new Group(roomID, null, users, null);
-                    databaseReference.child(roomID).setValue(group);
-                    Toast.makeText(context, "Room created", Toast.LENGTH_SHORT).show();
+                    databaseReference.child(roomID).setValue(group, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            Toast.makeText(context, "Room created", Toast.LENGTH_SHORT).show();
+                            Intent playlistIntent = new Intent(context, PlaylistActivity.class);
+                            playlistIntent.putExtra(roomIDExtra, roomID);
+                            startActivity(playlistIntent);
+                        }
+                    });
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
     }
 }
