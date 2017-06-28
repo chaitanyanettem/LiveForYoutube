@@ -27,10 +27,19 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.firebase:firebase-database:11.0.1'
+    compile 'com.google.firebase:firebase-auth:11.0.1'
+    compile 'com.google.android.gms:play-services-auth:11.0.1'
+
+    // Butterknife
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+
+    //Timber
     compile 'com.jakewharton.timber:timber:4.5.1'
     testCompile 'junit:junit:4.12'
+
+    //Once
+    compile 'com.jonathanfinerty.once:once:1.2.2'
 }
 
 
