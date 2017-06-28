@@ -4,4 +4,6 @@
     <string name="send">Send</string>
 
     <string name="player_error">Error initializing YouTube player: %s</string>
+    <string name="roomid">Room ID</string>
+    <string name="submit">Submit</string>
 </resources>

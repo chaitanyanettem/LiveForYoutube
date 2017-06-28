@@ -73,4 +73,14 @@ public class PlaylistActivity extends YouTubeBaseActivity implements YouTubePlay
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {
         return youTubeView;
     }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+    }
 }

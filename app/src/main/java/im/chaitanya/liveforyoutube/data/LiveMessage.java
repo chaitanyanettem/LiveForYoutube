@@ -4,7 +4,7 @@ package im.chaitanya.liveforyoutube.data;
  * Created by chaitanya on 28-06-2017.
  */
 
-class LiveMessage {
+public class LiveMessage {
     private String senderName;
     private String message;
 
