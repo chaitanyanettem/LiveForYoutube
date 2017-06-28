@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
             signIn();
+            Once.markDone(ONCE_LOGIN);
         }
     }
 
@@ -147,25 +148,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void createOrJoinRoom(final String roomID) {
         final Context context = this;
-        DatabaseReference roomReference = databaseReference.child(roomID);
+        final DatabaseReference roomReference = databaseReference.child(roomID);
+        String email = firebaseAuth.getCurrentUser().getEmail();
+        String fname = firebaseAuth.getCurrentUser().getDisplayName().split(" ")[0];
+        final User user = new User(email, fname);
+        final Intent playlistIntent = new Intent(context, PlaylistActivity.class);
+        playlistIntent.putExtra(roomIDExtra, roomID);
         roomReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Toast.makeText(context, "Room already exists. Joining", Toast.LENGTH_SHORT).show();
+                    roomReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).setValue(user);
+                    startActivity(playlistIntent);
                 }
                 else {
-                    String email = firebaseAuth.getCurrentUser().getEmail();
-                    String fname = firebaseAuth.getCurrentUser().getDisplayName().split(" ")[0];
-                    final User user = new User(email, fname);
                     Group group = new Group(roomID, null, null, null);
                     databaseReference.child(roomID).setValue(group, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             databaseReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).setValue(user);
-                            Intent playlistIntent = new Intent(context, PlaylistActivity.class);
                             Toast.makeText(context, "Room created", Toast.LENGTH_SHORT).show();
-                            playlistIntent.putExtra(roomIDExtra, roomID);
                             startActivity(playlistIntent);
                         }
                     });
