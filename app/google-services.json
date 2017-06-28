@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "564553507188",
+    "firebase_url": "https://liveforyoutube.firebaseio.com",
+    "project_id": "liveforyoutube",
+    "storage_bucket": "liveforyoutube.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564553507188:android:cb2820e340c557ef",
+        "android_client_info": {
+          "package_name": "im.chaitanya.liveforyoutube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "564553507188-vdm2rq81ak3cehpmmfnafiefvbmkpb19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "im.chaitanya.liveforyoutube",
+            "certificate_hash": "31a9c690885fdb9d5ac9fb77b0fa252c54ec0d61"
+          }
+        },
+        {
+          "client_id": "564553507188-mmtbc04mqi83128sm4759ldpcuhd3c9g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "im.chaitanya.liveforyoutube",
+            "certificate_hash": "b6fc76e172f585d15315935d6b3af765d9c3e4e1"
+          }
+        },
+        {
+          "client_id": "564553507188-9hm5qe1i0uu99odih60nrir3cn206o3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACWSrV0r6-HoRBr4f1XyTl1qynRa8fRkc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "564553507188-9hm5qe1i0uu99odih60nrir3cn206o3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
