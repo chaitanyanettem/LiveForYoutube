@@ -13,11 +13,11 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,9 @@ import timber.log.Timber;
 public class PlaylistActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     DatabaseReference databaseReference;
-    DatabaseReference roomReference;
+    DatabaseReference messagesReference;
+    DatabaseReference indexReference;
+    DatabaseReference seekReference;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     @BindView(R.id.message_recycler) RecyclerView messageRecycler;
@@ -55,8 +57,10 @@ public class PlaylistActivity extends YouTubeBaseActivity implements YouTubePlay
         Timber.plant(new Timber.DebugTree());
         databaseReference = FirebaseDatabase.getInstance().getReference().child("groups");
         roomID = getIntent().getStringExtra(MainActivity.roomIDExtra);
-        roomReference = databaseReference.child(roomID).child("messages");
-        roomReference.addValueEventListener(messageListener);
+        messagesReference = databaseReference.child(roomID).child("messages");
+        indexReference = databaseReference.child(roomID).child("index");
+        seekReference = databaseReference.child(roomID).child("seek");
+        messagesReference.addChildEventListener(messageListener);
         adapter = new MessageAdapter(this, messages);
         messageRecycler.setAdapter(adapter);
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -71,14 +75,27 @@ public class PlaylistActivity extends YouTubeBaseActivity implements YouTubePlay
         livePlaybackEventListener = new LivePlaybackEventListener();
     }
 
-    ValueEventListener messageListener = new ValueEventListener() {
+    ChildEventListener messageListener = new ChildEventListener() {
         @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                LiveMessage message = messageSnapshot.getValue(LiveMessage.class);
-                messages.add(message);
-            }
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            LiveMessage message = dataSnapshot.getValue(LiveMessage.class);
+            messages.add(message);
             adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
         }
 
         @Override

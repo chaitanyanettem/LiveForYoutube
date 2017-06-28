@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     startActivity(playlistIntent);
                 }
                 else {
-                    Group group = new Group(roomID, null, null, null);
+                    Group group = new Group(roomID, null, null, null, 1, 0);
                     databaseReference.child(roomID).setValue(group, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
