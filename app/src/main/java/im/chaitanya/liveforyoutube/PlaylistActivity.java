@@ -28,6 +28,9 @@ public class PlaylistActivity extends YouTubeBaseActivity implements YouTubePlay
     public static final String YT_DEV_KEY = "AIzaSyACWSrV0r6-HoRBr4f1XyTl1qynRa8fRkc";
     private YouTubePlayerView youTubeView;
 
+    private LivePlayerStateChangeListener livePlayerStateChangeListener;
+    private LivePlaybackEventListener livePlaybackEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +45,16 @@ public class PlaylistActivity extends YouTubeBaseActivity implements YouTubePlay
 
         youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(YT_DEV_KEY, this);
+
+        livePlayerStateChangeListener = new LivePlayerStateChangeListener();
+        livePlaybackEventListener = new LivePlaybackEventListener();
     }
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer,
                                         boolean wasRestored) {
+        youTubePlayer.setPlayerStateChangeListener(livePlayerStateChangeListener);
+        youTubePlayer.setPlaybackEventListener(livePlaybackEventListener);
         if (!wasRestored) {
             youTubePlayer.loadPlaylist(roomID);
         }
@@ -74,13 +82,70 @@ public class PlaylistActivity extends YouTubeBaseActivity implements YouTubePlay
         return youTubeView;
     }
 
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+    private final class LivePlaybackEventListener implements YouTubePlayer.PlaybackEventListener {
 
+        @Override
+        public void onPlaying() {
+            // Called when playback starts, either due to user action or call to play().
+            Timber.d("Playing");
+        }
+
+        @Override
+        public void onPaused() {
+            // Called when playback is paused, either due to user action or call to pause().
+            Timber.d("Paused");
+        }
+
+        @Override
+        public void onStopped() {
+            // Called when playback stops for a reason other than being paused.
+            Timber.d("Stopped");
+        }
+
+        @Override
+        public void onBuffering(boolean b) {
+            // Called when buffering starts or ends.
+        }
+
+        @Override
+        public void onSeekTo(int i) {
+            // Called when a jump in playback position occurs, either
+            // due to user scrubbing or call to seekRelativeMillis() or seekToMillis()
+        }
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+    private final class LivePlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeListener {
 
+        @Override
+        public void onLoading() {
+            // Called when the player is loading a video
+            // At this point, it's not ready to accept commands affecting playback such as play() or pause()
+        }
+
+        @Override
+        public void onLoaded(String s) {
+            // Called when a video is done loading.
+            // Playback methods such as play(), pause() or seekToMillis(int) may be called after this callback.
+        }
+
+        @Override
+        public void onAdStarted() {
+            // Called when playback of an advertisement starts.
+        }
+
+        @Override
+        public void onVideoStarted() {
+            // Called when playback of the video starts.
+        }
+
+        @Override
+        public void onVideoEnded() {
+            // Called when the video reaches its end.
+        }
+
+        @Override
+        public void onError(YouTubePlayer.ErrorReason errorReason) {
+            // Called when an error occurs.
+        }
     }
 }
