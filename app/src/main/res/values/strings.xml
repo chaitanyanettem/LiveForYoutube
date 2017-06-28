@@ -2,4 +2,6 @@
     <string name="app_name">LiveForYoutube</string>
     <string name="message">Enter your message</string>
     <string name="send">Send</string>
+
+    <string name="player_error">Error initializing YouTube player: %s</string>
 </resources>

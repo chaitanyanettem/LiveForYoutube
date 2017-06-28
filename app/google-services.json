@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "564553507188-0ukofialbpu0p22jra2cme4ojtjmglap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "im.chaitanya.liveforyoutube",
+            "certificate_hash": "50c48fde06724883d1cc48be5c1862d8f610eabe"
+          }
+        },
+        {
           "client_id": "564553507188-vdm2rq81ak3cehpmmfnafiefvbmkpb19.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
